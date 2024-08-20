@@ -36,7 +36,7 @@ class _FiltersScreenState extends State<FiltersScreen> {
         title: const Text("Your Filters"),
       ),
       body: PopScope(
-        canPop: false,
+        canPop: true,
         onPopInvoked: (bool didPop) {
           if (didPop) return;
           Navigator.of(context).pop({
@@ -46,6 +46,21 @@ class _FiltersScreenState extends State<FiltersScreen> {
             Filter.vegan: _filters['vegan'],
           });
         },
+        /**
+ * PopScope(
+  canPop: false,
+  onPopInvoked: (bool didPop) {
+    if(didPop) return;
+    Navigator.of(context).pop({
+      Filter.glutenFree: _glutenFreeFilterSet,
+      Filter.lactoseFree: _lactoseFreeFilterSet,
+      Filter.vegetarian: _vegetarianFilterSet,
+      Filter.vegan: _veganFilterSet,
+    });
+  },
+  child: Column(...) // same code as shown in the next lecture
+),
+ */
         child: Column(
           children: [
             SwitchTileFilter(
@@ -82,19 +97,3 @@ class _FiltersScreenState extends State<FiltersScreen> {
     );
   }
 }
-
-/**
- * PopScope(
-  canPop: false,
-  onPopInvoked: (bool didPop) {
-    if(didPop) return;
-    Navigator.of(context).pop({
-      Filter.glutenFree: _glutenFreeFilterSet,
-      Filter.lactoseFree: _lactoseFreeFilterSet,
-      Filter.vegetarian: _vegetarianFilterSet,
-      Filter.vegan: _veganFilterSet,
-    });
-  },
-  child: Column(...) // same code as shown in the next lecture
-),
- */
