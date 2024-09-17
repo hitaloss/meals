@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class SwitchTileFilter extends StatelessWidget {
   const SwitchTileFilter({
     super.key,
-    required this.glutenFreeFilterSet,
+    required this.propertyStatusFilterSet,
     required this.changePropertyStatus,
     required this.title,
     required this.subtitle,
   });
 
-  final bool glutenFreeFilterSet;
+  final bool propertyStatusFilterSet;
   final void Function(bool isChecked) changePropertyStatus;
   final String title;
   final String subtitle;
@@ -17,7 +17,7 @@ class SwitchTileFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SwitchListTile(
-      value: glutenFreeFilterSet,
+      value: propertyStatusFilterSet,
       onChanged: (isChecked) {
         changePropertyStatus(isChecked);
       },
