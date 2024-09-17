@@ -1,40 +1,28 @@
 import 'package:flutter/material.dart';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:meals/widgets/switch_tile_filter.dart';
+import 'package:meals/providers/filters_provider.dart';
 
-enum Filter {
-  glutenFree,
-  lactoseFree,
-  vegetarian,
-  vegan,
-}
-
-class FiltersScreen extends StatefulWidget {
-  const FiltersScreen({
-    super.key,
-    required this.currentFilters,
-  });
-
-  final Map<Filter, bool> currentFilters;
+class FiltersScreen extends ConsumerStatefulWidget {
+  const FiltersScreen({super.key});
 
   @override
-  State<FiltersScreen> createState() => _FiltersScreenState();
+  ConsumerState<FiltersScreen> createState() => _FiltersScreenState();
 }
 
-class _FiltersScreenState extends State<FiltersScreen> {
-  final Map<String, bool> _filters = {
-    'gluten': false,
-    'lactose': false,
-    'vegetarian': false,
-    'vegan': false,
-  };
+class _FiltersScreenState extends ConsumerState<FiltersScreen> {
+  final Map<String, bool> _filters = {};
 
   @override
   void initState() {
     super.initState();
-    _filters['gluten'] = widget.currentFilters[Filter.glutenFree]!;
-    _filters['lactose'] = widget.currentFilters[Filter.lactoseFree]!;
-    _filters['vegetarian'] = widget.currentFilters[Filter.vegetarian]!;
-    _filters['vegan'] = widget.currentFilters[Filter.vegan]!;
+    final activeFilters = ref.read(filtersProvider);
+    _filters['gluten'] = activeFilters[Filter.glutenFree]!;
+    _filters['lactose'] = activeFilters[Filter.lactoseFree]!;
+    _filters['vegetarian'] = activeFilters[Filter.vegetarian]!;
+    _filters['vegan'] = activeFilters[Filter.vegan]!;
   }
 
   void _changeFilterStatus(String filter, bool isChecked) {
@@ -52,39 +40,38 @@ class _FiltersScreenState extends State<FiltersScreen> {
       body: PopScope(
         canPop: true,
         onPopInvoked: (bool didPop) {
-          if (didPop) return;
-          Navigator.of(context).pop({
-            Filter.glutenFree: _filters['gluten'],
-            Filter.lactoseFree: _filters['lactose'],
-            Filter.vegetarian: _filters['vegetarian'],
-            Filter.vegan: _filters['vegan'],
+          ref.read(filtersProvider.notifier).setFilters({
+            Filter.glutenFree: _filters['gluten']!,
+            Filter.lactoseFree: _filters['lactose']!,
+            Filter.vegetarian: _filters['vegetarian']!,
+            Filter.vegan: _filters['vegan']!,
           });
         },
         child: Column(
           children: [
             SwitchTileFilter(
-              glutenFreeFilterSet: _filters['gluten']!,
+              propertyStatusFilterSet: _filters['gluten']!,
               changePropertyStatus: (isChecked) =>
                   _changeFilterStatus('gluten', isChecked),
               title: "Gluten-free",
               subtitle: "Only include gluten-free meals.",
             ),
             SwitchTileFilter(
-              glutenFreeFilterSet: _filters['lactose']!,
+              propertyStatusFilterSet: _filters['lactose']!,
               changePropertyStatus: (isChecked) =>
                   _changeFilterStatus('lactose', isChecked),
               title: "Lactose-free",
               subtitle: "Only include lactose-free meals.",
             ),
             SwitchTileFilter(
-              glutenFreeFilterSet: _filters['vegetarian']!,
+              propertyStatusFilterSet: _filters['vegetarian']!,
               changePropertyStatus: (isChecked) =>
                   _changeFilterStatus('vegetarian', isChecked),
               title: "Vegetarian",
               subtitle: "Only include vegetarian meals.",
             ),
             SwitchTileFilter(
-              glutenFreeFilterSet: _filters['vegan']!,
+              propertyStatusFilterSet: _filters['vegan']!,
               changePropertyStatus: (isChecked) =>
                   _changeFilterStatus('vegan', isChecked),
               title: "Vegan",
