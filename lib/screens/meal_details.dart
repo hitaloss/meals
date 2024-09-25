@@ -28,13 +28,26 @@ class MealDetailsScreen extends ConsumerWidget {
           title: Text(meal.title),
           actions: [
             IconButton(
-                onPressed: () {
-                  final message = ref
-                      .read(favoriteMealsProvider.notifier)
-                      .toggleMealFavorite(meal);
-                  showInfoMessage(message);
+              onPressed: () {
+                final message = ref
+                    .read(favoriteMealsProvider.notifier)
+                    .toggleMealFavorite(meal);
+                showInfoMessage(message);
+              },
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 3000),
+                transitionBuilder: (child, animation) {
+                  return RotationTransition(
+                    turns: Tween<double>(begin: 0.3, end: 1.0).animate(
+                        CurvedAnimation(
+                            parent: animation, curve: Curves.easeInOut)),
+                    child: child,
+                  );
                 },
-                icon: Icon(isFavorite ? Icons.star : Icons.star_border))
+                child: Icon(isFavorite ? Icons.star : Icons.star_border,
+                    key: ValueKey(isFavorite)),
+              ),
+            )
           ],
         ),
         body: SingleChildScrollView(
