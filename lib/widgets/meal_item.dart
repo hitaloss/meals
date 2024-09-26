@@ -31,13 +31,16 @@ class MealItem extends StatelessWidget {
           onSelectMeal(context, meal);
         },
         child: Stack(children: [
-          FadeInImage(
-            placeholder: MemoryImage(kTransparentImage),
-            image: NetworkImage(meal.imageUrl),
-            fit: BoxFit.cover,
-            height: 200,
-            width: double.infinity,
-            imageSemanticLabel: meal.title,
+          Hero(
+            tag: meal.id,
+            child: FadeInImage(
+              placeholder: MemoryImage(kTransparentImage),
+              image: NetworkImage(meal.imageUrl),
+              fit: BoxFit.cover,
+              height: 200,
+              width: double.infinity,
+              imageSemanticLabel: meal.title,
+            ),
           ),
           Positioned(
               bottom: 0,
